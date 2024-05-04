@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/playerLayout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/playerBackground"
+        android:layout_width="0dp"
+        android:layout_height="100dp"
+        android:layout_marginHorizontal="@dimen/dp8"
+        app:cardBackgroundColor="@color/white"
+        app:cardCornerRadius="@dimen/dp8"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <ImageView
+        android:id="@+id/trackImage"
+        android:layout_width="55dp"
+        android:layout_height="@dimen/dp0"
+        android:layout_marginStart="@dimen/dp8"
+        android:elevation="10dp"
+        app:layout_constraintBottom_toTopOf="@id/seekBar"
+        app:layout_constraintDimensionRatio="1:1"
+        app:layout_constraintStart_toStartOf="@id/playerBackground"
+        app:layout_constraintTop_toTopOf="@id/playerBackground"
+        tools:src="@tools:sample/avatars"/>
+
+    <TextView
+        android:id="@id/trackName"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="10dp"
+        android:layout_marginEnd="@dimen/dp8"
+        android:elevation="10dp"
+        android:ellipsize="end"
+        android:maxLines="1"
+        android:textSize="@dimen/sp18"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toTopOf="@+id/artistName"
+        app:layout_constraintEnd_toStartOf="@+id/prevImageView"
+        app:layout_constraintStart_toEndOf="@+id/trackImage"
+        app:layout_constraintTop_toTopOf="@+id/trackImage"
+        tools:text="Track Name" />
+
+    <TextView
+        android:id="@id/artistName"
+        android:layout_width="@dimen/dp0"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="@dimen/dp8"
+        android:elevation="10dp"
+        android:ellipsize="end"
+        android:maxLines="1"
+        android:textSize="@dimen/sp16"
+        app:layout_constraintBottom_toBottomOf="@+id/trackImage"
+        app:layout_constraintEnd_toStartOf="@+id/prevImageView"
+        app:layout_constraintHorizontal_bias="0"
+        app:layout_constraintStart_toStartOf="@+id/trackName"
+        app:layout_constraintTop_toBottomOf="@+id/trackName"
+        tools:text="Artist" />
+
+    <ImageView
+        android:id="@+id/prevImageView"
+        android:layout_width="@dimen/dp32"
+        android:layout_height="@dimen/dp32"
+        android:layout_marginEnd="10dp"
+        android:elevation="10dp"
+        android:src="@android:drawable/ic_media_previous"
+        app:tint="@color/light_red"
+        app:layout_constraintBottom_toBottomOf="@+id/playPauseLayout"
+        app:layout_constraintEnd_toStartOf="@id/playPauseLayout"
+        app:layout_constraintTop_toTopOf="@+id/playPauseLayout" />
+
+    <FrameLayout
+        android:id="@+id/playPauseLayout"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        android:layout_marginEnd="10dp"
+        android:background="@drawable/play_pause_background"
+        android:elevation="10dp"
+        android:outlineProvider="none"
+        app:layout_constraintBottom_toTopOf="@+id/seekBar"
+        app:layout_constraintEnd_toStartOf="@+id/nextImageView"
+        app:layout_constraintTop_toTopOf="@+id/playerBackground">
+
+        <ImageView
+            android:id="@+id/play_pause_image_view"
+            android:layout_width="@dimen/dp32"
+            android:layout_height="@dimen/dp32"
+            android:layout_gravity="center"
+            app:srcCompat="@android:drawable/ic_media_pause" />
+    </FrameLayout>
+
+    <ImageView
+        android:id="@+id/nextImageView"
+        android:layout_width="@dimen/dp32"
+        android:layout_height="@dimen/dp32"
+        android:layout_marginEnd="@dimen/dp16"
+        android:elevation="10dp"
+        android:src="@android:drawable/ic_media_next"
+        app:tint="@color/light_red"
+        app:layout_constraintBottom_toBottomOf="@+id/playPauseLayout"
+        app:layout_constraintEnd_toEndOf="@id/playerBackground"
+        app:layout_constraintTop_toTopOf="@+id/playPauseLayout" />
+
+    <SeekBar
+        android:id="@+id/seekBar"
+        android:layout_width="@dimen/dp0"
+        android:layout_height="wrap_content"
+        android:elevation="10dp"
+        android:progressTint="@color/dark_red"
+        android:progress="50"
+        android:thumb="@color/dark_red"
+        app:layout_constraintBottom_toBottomOf="@id/playerBackground"
+        app:layout_constraintEnd_toEndOf="@id/playerBackground"
+        app:layout_constraintStart_toStartOf="@id/playerBackground"
+        tools:progress="50" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

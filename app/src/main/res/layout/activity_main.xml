@@ -30,4 +30,8 @@
         tools:itemCount="7"
         tools:listitem="@layout/item_track" />
 
+    <include
+        android:id="@+id/playerFragment"
+        layout="@layout/player_fragment" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>
