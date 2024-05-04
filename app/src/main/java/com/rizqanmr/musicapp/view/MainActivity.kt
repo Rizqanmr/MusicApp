@@ -2,6 +2,7 @@ package com.rizqanmr.musicapp.view
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.rizqanmr.musicapp.R
 import com.rizqanmr.musicapp.adapter.MusicAdapter
@@ -26,6 +27,9 @@ class MainActivity : AppCompatActivity() {
             layoutManager = LinearLayoutManager(this@MainActivity)
             musicAdapter = MusicAdapter(listMusic)
             adapter = musicAdapter
+            val itemDecoration = DividerItemDecoration(this.context, DividerItemDecoration.VERTICAL)
+            itemDecoration.setDrawable(getDrawable(R.drawable.divider)!!)
+            addItemDecoration(itemDecoration)
         }
 
         musicAdapter.setMusicListener(object : MusicAdapter.MusicListener {
