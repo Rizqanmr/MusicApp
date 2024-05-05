@@ -6,5 +6,5 @@ data class Track(
     @SerializedName("resultCount")
     val resultCount: Int = 0,
     @SerializedName("results")
-    val results: List<TrackItem>?
+    val results: List<TrackItem> = emptyList()
 )

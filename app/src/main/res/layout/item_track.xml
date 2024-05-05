@@ -8,7 +8,7 @@
         
         <variable
             name="item"
-            type="com.rizqanmr.musicapp.models.MusicItem" />
+            type="com.rizqanmr.musicapp.models.TrackItem" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -53,18 +53,18 @@
             tools:text="Artist One" />
 
         <TextView
-            android:id="@+id/tvDuration"
+            android:id="@+id/tvAlbum"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/dp2"
-            android:text="@{item.trackTimeMillis}"
+            android:text="@{item.collectionName}"
             android:textColor="@color/grey"
             android:textSize="@dimen/sp12"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="@id/tvTitle"
             app:layout_constraintTop_toBottomOf="@id/tvArtistName"
             app:layout_constraintVertical_bias="0"
-            tools:text="5:00" />
+            tools:text="Album" />
 
         <ImageView
             android:id="@+id/ivSound"
