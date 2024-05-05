@@ -1,7 +1,10 @@
 package com.rizqanmr.musicapp.view
 
+import android.media.MediaPlayer
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.os.Handler
+import android.widget.SeekBar
 import androidx.activity.viewModels
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.DividerItemDecoration
@@ -14,6 +17,7 @@ import com.rizqanmr.musicapp.models.TrackItem
 import com.rizqanmr.musicapp.utils.setFitImageUrl
 import com.rizqanmr.musicapp.viewmodels.MainViewModel
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.Runnable
 
 @AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
@@ -21,12 +25,18 @@ class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
     private lateinit var musicAdapter: MusicAdapter
     private val viewModel by viewModels<MainViewModel>()
+    private lateinit var mediaPlayer: MediaPlayer
+    private lateinit var handler: Handler
+    private lateinit var runnable: Runnable
+    private var trackUrl = ""
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        mediaPlayer = MediaPlayer()
+        handler = Handler()
         viewModel.searchTrack()
         setupRecyclerview()
         selectedTrack()
@@ -53,8 +63,17 @@ class MainActivity : AppCompatActivity() {
                     artistName.text = item.artistName
                     trackImage.setFitImageUrl(item.artworkUrlLarge, R.drawable.ic_broken_image)
                     playerLayout.isVisible = true
+                    trackUrl = item.previewUrl
+                    playTrack(trackUrl)
+                    playPauseImageView.setImageResource(android.R.drawable.ic_media_pause)
                     playPauseLayout.setOnClickListener {
-                        //todo: event play pause
+                        if (mediaPlayer.isPlaying) {
+                            mediaPlayer.pause()
+                            playPauseImageView.setImageResource(android.R.drawable.ic_media_play)
+                        } else {
+                            mediaPlayer.start()
+                            playPauseImageView.setImageResource(android.R.drawable.ic_media_pause)
+                        }
                     }
                     prevImageView.setOnClickListener {
                         //todo: event prev
@@ -62,6 +81,16 @@ class MainActivity : AppCompatActivity() {
                     nextImageView.setOnClickListener {
                         //todo: event next
                     }
+
+                    seekBar.setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener {
+                        override fun onProgressChanged(seekBar: SeekBar?, progress: Int, fromUser: Boolean) {
+                            if (fromUser) mediaPlayer.seekTo(progress)
+                        }
+
+                        override fun onStartTrackingTouch(p0: SeekBar?) {}
+
+                        override fun onStopTrackingTouch(p0: SeekBar?) {}
+                    })
                 }
             }
 
@@ -87,8 +116,9 @@ class MainActivity : AppCompatActivity() {
     private fun showListTrack(list: List<TrackItem>) {
         with(binding) {
             if (list.isNotEmpty()) {
+                val onlySong: List<TrackItem> = list.filter { it.kind == "song" }
                 rvMusic.isVisible = true
-                musicAdapter.asyncListDiffer.submitList(list)
+                musicAdapter.asyncListDiffer.submitList(onlySong)
             } else {
                 rvMusic.isVisible = false
                 layoutEmptyError.clEmptyError.isVisible = true
@@ -103,5 +133,33 @@ class MainActivity : AppCompatActivity() {
             layoutEmptyError.clEmptyError.isVisible = true
             layoutEmptyError.tvEmptyErrorTitle.text = errorMessage
         }
+    }
+
+    private fun playTrack(trackUrl: String) {
+        if (mediaPlayer.isPlaying || !mediaPlayer.isPlaying) {
+            mediaPlayer.stop()
+            mediaPlayer.reset()
+        }
+        mediaPlayer.setDataSource(trackUrl)
+        mediaPlayer.prepareAsync()
+        mediaPlayer.setOnPreparedListener {
+            binding.playerFragment.seekBar.max = mediaPlayer.duration
+            mediaPlayer.start()
+            updateSeekbar()
+        }
+    }
+
+    private fun updateSeekbar() {
+        runnable = Runnable {
+            binding.playerFragment.seekBar.progress = mediaPlayer.currentPosition
+            handler.postDelayed(runnable, 1000)
+        }
+        handler.postDelayed(runnable, 0)
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        mediaPlayer.release()
+        handler.removeCallbacks(runnable)
     }
 }

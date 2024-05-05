@@ -118,7 +118,6 @@
         android:layout_height="wrap_content"
         android:elevation="10dp"
         android:progressTint="@color/dark_red"
-        android:progress="50"
         android:thumb="@color/dark_red"
         app:layout_constraintBottom_toBottomOf="@id/playerBackground"
         app:layout_constraintEnd_toEndOf="@id/playerBackground"
