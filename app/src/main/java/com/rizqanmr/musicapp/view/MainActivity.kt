@@ -66,6 +66,9 @@ class MainActivity : AppCompatActivity() {
         viewModel.listTrackLiveData().observe(this) {
             showListTrack(it)
         }
+        viewModel.errorListTrackLiveData().observe(this) {
+            handleError(it)
+        }
     }
 
     private fun showLoading(isLoading: Boolean) {
@@ -73,13 +76,23 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun showListTrack(list: List<TrackItem>) {
-        if (list.isNotEmpty()) {
-            binding.rvMusic.isVisible = true
-            musicAdapter.asyncListDiffer.submitList(list)
-        } else {
-            binding.rvMusic.isVisible = false
-            binding.layoutEmptyError.clEmptyError.isVisible = true
-            binding.layoutEmptyError.tvEmptyErrorTitle.text = "Oops, data not found"
+        with(binding) {
+            if (list.isNotEmpty()) {
+                rvMusic.isVisible = true
+                musicAdapter.asyncListDiffer.submitList(list)
+            } else {
+                rvMusic.isVisible = false
+                layoutEmptyError.clEmptyError.isVisible = true
+                layoutEmptyError.tvEmptyErrorTitle.text = "Oops, data not found"
+            }
+        }
+    }
+
+    private fun handleError(errorMessage: String) {
+        with(binding) {
+            rvMusic.isVisible = false
+            layoutEmptyError.clEmptyError.isVisible = true
+            layoutEmptyError.tvEmptyErrorTitle.text = errorMessage
         }
     }
 }
