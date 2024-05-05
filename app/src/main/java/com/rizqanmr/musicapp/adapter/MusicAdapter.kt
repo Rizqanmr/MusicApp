@@ -4,14 +4,28 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
+import androidx.recyclerview.widget.AsyncListDiffer
+import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.rizqanmr.musicapp.R
 import com.rizqanmr.musicapp.databinding.ItemTrackBinding
-import com.rizqanmr.musicapp.models.MusicItem
+import com.rizqanmr.musicapp.models.TrackItem
 import com.rizqanmr.musicapp.utils.setFitImageUrl
 
-class MusicAdapter(private val musicList: List<MusicItem>) : RecyclerView.Adapter<MusicAdapter.MusicViewHolder>() {
+class MusicAdapter : RecyclerView.Adapter<MusicAdapter.MusicViewHolder>() {
 
+    private val diffUtil = object : DiffUtil.ItemCallback<TrackItem>() {
+        override fun areItemsTheSame(oldItem: TrackItem, newItem: TrackItem): Boolean {
+            return oldItem == newItem
+        }
+
+        override fun areContentsTheSame(oldItem: TrackItem, newItem: TrackItem): Boolean {
+            return oldItem.trackId == newItem.trackId
+        }
+
+    }
+
+    val asyncListDiffer = AsyncListDiffer(this, diffUtil)
     private lateinit var musicListener: MusicListener
     private var activeItemPos: Int? = null
 
@@ -20,11 +34,11 @@ class MusicAdapter(private val musicList: List<MusicItem>) : RecyclerView.Adapte
     }
 
     class MusicViewHolder(private val binding: ItemTrackBinding) : RecyclerView.ViewHolder(binding.root) {
-        fun bindData(item: MusicItem, listener: MusicListener, isActive: Boolean) {
+        fun bindData(item: TrackItem, listener: MusicListener, isActive: Boolean) {
             (binding as? ItemTrackBinding)?.let { itemTrack ->
                 itemTrack.item = item
                 with(itemTrack) {
-                    ivTrack.setFitImageUrl(item.trackImageUrl, R.drawable.ic_broken_image)
+                    ivTrack.setFitImageUrl(item.artworkUrlLarge, R.drawable.ic_broken_image)
                     if (isActive) {
                         ivSound.isVisible = true
                         tvTitle.setTextColor(ContextCompat.getColor(tvTitle.context, R.color.dark_red))
@@ -39,7 +53,7 @@ class MusicAdapter(private val musicList: List<MusicItem>) : RecyclerView.Adapte
     }
 
     interface MusicListener {
-        fun onItemClick(itemTrackBinding: ItemTrackBinding, item: MusicItem)
+        fun onItemClick(itemTrackBinding: ItemTrackBinding, item: TrackItem)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MusicViewHolder {
@@ -47,10 +61,10 @@ class MusicAdapter(private val musicList: List<MusicItem>) : RecyclerView.Adapte
         return MusicViewHolder(binding)
     }
 
-    override fun getItemCount(): Int = musicList.size
+    override fun getItemCount(): Int = asyncListDiffer.currentList.size
 
     override fun onBindViewHolder(holder: MusicViewHolder, position: Int) {
-        val item = musicList[position]
+        val item = asyncListDiffer.currentList[position]
         holder.bindData(item, musicListener, position == activeItemPos)
         holder.itemView.setOnClickListener { setActiveItem(position) }
     }
