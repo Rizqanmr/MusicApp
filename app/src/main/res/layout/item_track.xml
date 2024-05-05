@@ -19,8 +19,9 @@
 
         <ImageView
             android:id="@+id/ivTrack"
-            android:layout_width="wrap_content"
+            android:layout_width="@dimen/dp64"
             android:layout_height="wrap_content"
+            android:scaleType="fitCenter"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             tools:src="@tools:sample/avatars"/>
@@ -31,7 +32,7 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/dp8"
             android:ellipsize="end"
-            android:maxLines="2"
+            android:maxLines="1"
             android:text="@{item.trackName}"
             android:textSize="@dimen/sp16"
             android:textStyle="bold"
@@ -42,25 +43,33 @@
 
         <TextView
             android:id="@+id/tvArtistName"
-            android:layout_width="wrap_content"
+            android:layout_width="@dimen/dp0"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/dp4"
+            android:ellipsize="end"
+            android:maxLines="1"
             android:text="@{item.artistName}"
             android:textColor="@color/grey"
             android:textSize="@dimen/sp12"
+            app:layout_constraintHorizontal_bias="0"
+            app:layout_constraintEnd_toStartOf="@+id/ivSound"
             app:layout_constraintStart_toStartOf="@id/tvTitle"
             app:layout_constraintTop_toBottomOf="@id/tvTitle"
             tools:text="Artist One" />
 
         <TextView
             android:id="@+id/tvAlbum"
-            android:layout_width="wrap_content"
+            android:layout_width="@dimen/dp0"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/dp2"
+            android:ellipsize="end"
+            android:maxLines="1"
             android:text="@{item.collectionName}"
             android:textColor="@color/grey"
             android:textSize="@dimen/sp12"
+            app:layout_constraintHorizontal_bias="0"
             app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/ivSound"
             app:layout_constraintStart_toStartOf="@id/tvTitle"
             app:layout_constraintTop_toBottomOf="@id/tvArtistName"
             app:layout_constraintVertical_bias="0"

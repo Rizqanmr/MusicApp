@@ -53,6 +53,15 @@ class MainActivity : AppCompatActivity() {
                     artistName.text = item.artistName
                     trackImage.setFitImageUrl(item.artworkUrlLarge, R.drawable.ic_broken_image)
                     playerLayout.isVisible = true
+                    playPauseLayout.setOnClickListener {
+                        //todo: event play pause
+                    }
+                    prevImageView.setOnClickListener {
+                        //todo: event prev
+                    }
+                    nextImageView.setOnClickListener {
+                        //todo: event next
+                    }
                 }
             }
 
