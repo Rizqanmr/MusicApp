@@ -34,4 +34,8 @@
         android:id="@+id/playerFragment"
         layout="@layout/player_fragment" />
 
+    <include
+        android:id="@+id/layoutLoading"
+        layout="@layout/layout_loading" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>
