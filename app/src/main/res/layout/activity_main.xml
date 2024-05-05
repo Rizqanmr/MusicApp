@@ -38,4 +38,8 @@
         android:id="@+id/layoutLoading"
         layout="@layout/layout_loading" />
 
+    <include
+        android:id="@+id/layoutEmptyError"
+        layout="@layout/layout_empty_error" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>

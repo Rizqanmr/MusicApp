@@ -78,6 +78,8 @@ class MainActivity : AppCompatActivity() {
             musicAdapter.asyncListDiffer.submitList(list)
         } else {
             binding.rvMusic.isVisible = false
+            binding.layoutEmptyError.clEmptyError.isVisible = true
+            binding.layoutEmptyError.tvEmptyErrorTitle.text = "Oops, data not found"
         }
     }
 }
