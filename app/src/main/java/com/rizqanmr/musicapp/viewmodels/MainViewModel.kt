@@ -31,10 +31,10 @@ class MainViewModel @Inject constructor(
         this.isLoading.value = isLoading
     }
 
-    fun searchTrack() = viewModelScope.launch {
+    fun searchTrack(term: String) = viewModelScope.launch {
         setIsLoading(true)
 
-        when (val result = repository.getTrackByTerm("komang")) {
+        when (val result = repository.getTrackByTerm(term)) {
             is Result.Success -> listTrackLiveData.value = result.data.results
             is Result.Error -> errorListTrackLiveData.value = result.error
         }

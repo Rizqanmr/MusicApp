@@ -5,7 +5,6 @@ import android.media.MediaPlayer
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.os.Handler
-import android.util.Log
 import android.view.inputmethod.EditorInfo
 import android.view.inputmethod.InputMethodManager
 import android.widget.SeekBar
@@ -42,7 +41,7 @@ class MainActivity : AppCompatActivity() {
 
         mediaPlayer = MediaPlayer()
         handler = Handler()
-        viewModel.searchTrack()
+        viewModel.searchTrack("")
         setupToolbar()
         setupRecyclerview()
         selectedTrack()
@@ -93,10 +92,10 @@ class MainActivity : AppCompatActivity() {
                         }
                     }
                     prevImageView.setOnClickListener {
-                        //todo: event prev
+                        Toast.makeText(this@MainActivity, "TODO: Prev Song", Toast.LENGTH_LONG).show()
                     }
                     nextImageView.setOnClickListener {
-                        //todo: event next
+                        Toast.makeText(this@MainActivity, "TODO: Next Song", Toast.LENGTH_LONG).show()
                     }
 
                     seekBar.setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener {
@@ -134,12 +133,13 @@ class MainActivity : AppCompatActivity() {
         with(binding) {
             if (list.isNotEmpty()) {
                 val onlySong: List<TrackItem> = list.filter { it.kind == "song" }
+                layoutEmptyError.clEmptyError.isVisible = false
                 rvMusic.isVisible = true
                 musicAdapter.asyncListDiffer.submitList(onlySong)
             } else {
                 rvMusic.isVisible = false
                 layoutEmptyError.clEmptyError.isVisible = true
-                layoutEmptyError.tvEmptyErrorTitle.text = "Oops, data not found"
+                layoutEmptyError.tvEmptyErrorTitle.text = "Oops, data not found. Please search with other keyword"
             }
         }
     }
@@ -154,9 +154,7 @@ class MainActivity : AppCompatActivity() {
 
     private fun performSearch() {
         val query = binding.etSearch.text.toString()
-        Log.d("MYTAG", "query: $query")
-        Toast.makeText(this, "query: $query", Toast.LENGTH_SHORT).show()
-
+        viewModel.searchTrack(query)
         clearFocusEtSearch()
     }
 
