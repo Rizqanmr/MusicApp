@@ -1,10 +1,15 @@
 package com.rizqanmr.musicapp.view
 
+import android.content.Context
 import android.media.MediaPlayer
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.os.Handler
+import android.util.Log
+import android.view.inputmethod.EditorInfo
+import android.view.inputmethod.InputMethodManager
 import android.widget.SeekBar
+import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.DividerItemDecoration
@@ -38,9 +43,20 @@ class MainActivity : AppCompatActivity() {
         mediaPlayer = MediaPlayer()
         handler = Handler()
         viewModel.searchTrack()
+        setupToolbar()
         setupRecyclerview()
         selectedTrack()
         setupObservers()
+    }
+
+    private fun setupToolbar() {
+        binding.etSearch.setOnEditorActionListener { _, actionId, _ ->
+            if (actionId == EditorInfo.IME_ACTION_SEARCH) {
+                performSearch()
+                return@setOnEditorActionListener true
+            }
+            false
+        }
     }
 
     private fun setupRecyclerview() {
@@ -58,6 +74,7 @@ class MainActivity : AppCompatActivity() {
     private fun selectedTrack() {
         musicAdapter.setMusicListener(object : MusicAdapter.MusicListener {
             override fun onItemClick(itemTrackBinding: ItemTrackBinding, item: TrackItem) {
+                clearFocusEtSearch()
                 with(binding.playerFragment) {
                     trackName.text = item.trackName
                     artistName.text = item.artistName
@@ -133,6 +150,20 @@ class MainActivity : AppCompatActivity() {
             layoutEmptyError.clEmptyError.isVisible = true
             layoutEmptyError.tvEmptyErrorTitle.text = errorMessage
         }
+    }
+
+    private fun performSearch() {
+        val query = binding.etSearch.text.toString()
+        Log.d("MYTAG", "query: $query")
+        Toast.makeText(this, "query: $query", Toast.LENGTH_SHORT).show()
+
+        clearFocusEtSearch()
+    }
+
+    private fun clearFocusEtSearch() {
+        val inputMethodManager = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+        inputMethodManager.hideSoftInputFromWindow(binding.etSearch.windowToken, 0)
+        binding.etSearch.clearFocus()
     }
 
     private fun playTrack(trackUrl: String) {
